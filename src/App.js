@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import Main from "./components/Main";
+import Sidebar from "./components/Sidebar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Todo from "./components/Todo";
+import { createContext, useState } from "react";
+
+export const AppContext = createContext(null);
 
 function App() {
+  const [users, setUsers] = useState([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContext.Provider value={{ users, setUsers }}>
+      <div className="bg-black h-screen overflow-hidden">
+        <main className="flex">
+          <BrowserRouter>
+            <Sidebar />
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/todo/:username" element={<Todo />} />
+            </Routes>
+          </BrowserRouter>
+        </main>
+      </div>
+    </AppContext.Provider>
   );
 }
 
